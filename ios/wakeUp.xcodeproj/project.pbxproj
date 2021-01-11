@@ -194,7 +194,6 @@
 				DF32F921CCECD46049023AC7 /* Pods-wakeUp-wakeUpTests.debug.xcconfig */,
 				A6313BF61282D922831CCBE9 /* Pods-wakeUp-wakeUpTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
