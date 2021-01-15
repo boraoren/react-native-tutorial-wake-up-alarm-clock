@@ -4,6 +4,7 @@ import ButtonGroup from '../../components/button/group';
 import City from '../../components/text/city';
 import DateTime from '../../components/text/datetime';
 import Geolocation from '@react-native-community/geolocation';
+import Config from 'react-native-config';
 
 const imageBackgroundRooster = require('../../components/images/background/rooster.png');
 
@@ -14,6 +15,8 @@ const MainScreen = () => {
     Geolocation.getCurrentPosition((info) => setLocation(info));
   }, []);
 
+  const hereMapAPI = Config.HERE_MAP_API;
+
   return (
     <>
       <ImageBackground
@@ -22,6 +25,7 @@ const MainScreen = () => {
         <City />
         <Text>{JSON.stringify(location)}</Text>
         <DateTime />
+        <Text>{hereMapAPI}</Text>
         <View style={styles.buttonGroupWrapper}>
           <ButtonGroup button1Title={'Snooze'} button2Title={'Dismiss'} />
         </View>
