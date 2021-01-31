@@ -3,19 +3,26 @@ import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import ButtonGroup from '../../components/button/group';
 import City from '../../components/text/city';
 import DateTime from '../../components/text/datetime';
-import Geolocation from '@react-native-community/geolocation';
+
 import Config from 'react-native-config';
+import {useLocation} from '../../hooks/useLocation';
 
 const imageBackgroundRooster = require('../../components/images/background/rooster.png');
 
 const MainScreen = () => {
-  const [location, setLocation] = useState({});
+  const {location} = useLocation();
+
+  const [hereApiResult, setHereApiResult] = useState({});
 
   useEffect(() => {
-    Geolocation.getCurrentPosition((info) => setLocation(info));
+    fetch(
+      `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=41.8842%2C-87.6388%2C250&mode=retrieveAddresses&maxresults=1&gen=9&apiKey=${Config.HERE_MAP_API_KEY}`,
+    )
+      .then((response) => response.json())
+      .then((json) =>
+        setHereApiResult(json.Response.View[0].Result[0].Location.Address.City),
+      );
   }, []);
-
-  const hereMapAPI = Config.HERE_MAP_API;
 
   return (
     <>
@@ -25,7 +32,7 @@ const MainScreen = () => {
         <City />
         <Text>{JSON.stringify(location)}</Text>
         <DateTime />
-        <Text>{hereMapAPI}</Text>
+        <Text>{JSON.stringify(hereApiResult)}</Text>
         <View style={styles.buttonGroupWrapper}>
           <ButtonGroup button1Title={'Snooze'} button2Title={'Dismiss'} />
         </View>
