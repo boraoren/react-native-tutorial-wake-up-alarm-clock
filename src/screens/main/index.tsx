@@ -10,12 +10,17 @@ const imageBackgroundRooster = require('../../components/images/background/roost
 
 const MainScreen = () => {
   const [location, setLocation] = useState({});
+  const [hereApiResult, setHereApiResult] = useState({});
 
   useEffect(() => {
     Geolocation.getCurrentPosition((info) => setLocation(info));
-  }, []);
 
-  const hereMapAPI = Config.HERE_MAP_API;
+    fetch(
+      `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=41.8842%2C-87.6388%2C250&mode=retrieveAddresses&maxresults=1&gen=9&apiKey=${Config.HERE_MAP_API_KEY}`,
+    )
+      .then((response) => response.json())
+      .then((json) => setHereApiResult(json.Response.View[0].Result[0].Location.Address.City));
+  }, []);
 
   return (
     <>
@@ -25,7 +30,7 @@ const MainScreen = () => {
         <City />
         <Text>{JSON.stringify(location)}</Text>
         <DateTime />
-        <Text>{hereMapAPI}</Text>
+        <Text>{JSON.stringify(hereApiResult)}</Text>
         <View style={styles.buttonGroupWrapper}>
           <ButtonGroup button1Title={'Snooze'} button2Title={'Dismiss'} />
         </View>
